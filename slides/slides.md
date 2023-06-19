@@ -1,5 +1,5 @@
 ---
-theme: seriph
+theme: default
 background: https://blog.christian-schou.dk/content/images/2022/09/API-Usage-Prometheus-Grafana.png
 class: text-center
 highlighter: shiki
@@ -17,37 +17,43 @@ title: Welcome to Slidev
 
 # Grafana Prometheus Workshop
 
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-     <carbon:arrow-right class="inline"/>
-  </span>
-</div>
-
 ---
-transition: fade-out
+transition: slide-up
 ---
 
-# What is Slidev?
+# What is Telemetry?
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+In a microservice architecture, telemetry often refers to the broader practice of gathering operational data from your services. This can include metrics, logs, and traces, which collectively help you understand how your microservices are performing, how they're interacting, and how data flows between them. Telemetry, therefore, represents a comprehensive monitoring strategy to ensure smooth operation, efficient problem diagnosis, and effective maintenance.
+A telemetry system in a microservice architecture might collect data like:
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
+  - Detailed error messages or stack traces
+  - Metadata about inter-service communications
+  - User behavior data, such as feature usage
+<style>
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #7b57c2 10%, #4a279d 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+</style>
+---
+transition: slide-left
+---
 
-<br>
-<br>
+# What are Metrics?
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
--->
+Metrics are a subset of telemetry. In a microservice context, they refer to the specific numerical values that represent the performance, usage, or behavior of each service. Metrics provide quantitative insight into your system, and they are crucial for alerting, dashboard visualization, and capacity planning.
+Metrics in a microservice architecture might include:
+  - CPU usage per service
+  - Memory usage per service
+  - Network latency between services
+  - Request rate (e.g., requests per second)
+  - Error rate
+  - Response time
 
 <style>
 h1 {
@@ -61,338 +67,176 @@ h1 {
 }
 </style>
 
-<!--
-Here is another comment.
--->
-
 ---
-layout: default
-transition: slide-down
+transition: fade-out
 ---
 
-# Table of contents
-
-```
-<Toc minDepth="1" maxDepth="5"></Toc>
-```
-
-<Toc></Toc>
+![Telemetry diagram](resources/telemetry_example_diagram.png)
 
 ---
-transition: slide-up
-
-level: 2
+transition: slide-left
 ---
 
-# Navigation
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
+# What is Grafana?
 
-### Keyboard Shortcuts
+Grafana is an open-source data visualization and monitoring platform. It provides a flexible and powerful environment 
+for creating dashboards, analyzing data, and monitoring systems and applications. Grafana supports a wide range of data sources, 
+including popular metrics databases like Prometheus, InfluxDB, and Graphite, as well as various logging systems. 
+Some key features and functionalities of Grafana include:
+- Data Visualization
+- Data Source Integration
+- Alerting and Notifications
+- Templating and Variables
+- Community and Plugins
 
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
----
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
----
-
-# Code
-
-Use code snippets and get the highlighting directly![^1]
-
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
-```
-
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
 
 <style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #7b57c2 10%, #4a279d 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }
 </style>
 
 ---
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
-
----
-class: px-20
+transition: fade-out
 ---
 
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
+![Telemetry diagram](https://grafana.com/media/grafana/images/grafana-dashboard-english.png)
 
 ---
-preload: false
+transition: slide-left
+layout: image-right
+image: https://www.honeycomb.io/wp-content/uploads/2021/12/blog_hnybyte_app_metrics_w_prometheus_thumbnail.jpg
 ---
 
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
-```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
-</div>
-
----
-
-# LaTeX
-
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
-
+# What is Prometheus?
 <br>
+Prometheus is an open-source monitoring and alerting toolkit, it is designed to collect, store, and analyze time series data in real-time. 
+Time series data refers to a sequence of data points collected at regular intervals over time. Prometheus uses a pull-based model, where it periodically scrapes metrics from various targets such as servers, applications, or other data sources. These metrics are stored in a time series database and can be queried using a flexible query language called Prometheus Query Language.
 
-Inline $\sqrt{3x-1}+(1+x)^2$
 
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
+<style>
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #7b57c2 10%, #4a279d 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+</style>
 
 ---
+transition: slide-up
+---
 
-# Diagrams
+# Prometheus Query Language
 
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
+Prometheus Query Language (PromQL) is a powerful and expressive language used to query and manipulate time series data in Prometheus.
+```ts {0|1|1-4}
+count(my_metric > 0)
 
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
+The count() function in PromQL is used to count the number of time series that match a specific condition or filter. 
+It returns a scalar value representing the count.
 ```
 
-```mermaid {theme: 'neutral', scale: 1}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
+
+```ts {0|1|1-4}
+rate(my_metric[5m])
+
+The rate() function in PromQL is used to calculate the per-second average rate of change for a time series. 
+It provides a way to measure the rate of increase or decrease of a metric over a specific time window.
 ```
 
-```plantuml {scale: 0.7}
-@startuml
+```ts {0|1|1-5}
+sum(rate(my_metric[1h])) by (label_name)
 
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
+The sum() function operates on each selected time series individually and adds up their respective 
+values at each timestamp. It returns a new time series where each data point represents the sum 
+of the values from the selected time series.
 ```
 
-</div>
 
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
+
+<style>
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #7b57c2 10%, #4a279d 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+</style>
 
 ---
-src: ./pages/multiple-entries.md
-hide: true
+layout: image-right
+image: /resources/example_diagram.jpg
+transition: slide-left
 ---
+
+# Example
+
+The main services are:
+- Grafana
+- Prometheus
+- Workshop App
+
+<style>
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #7b57c2 10%, #4a279d 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+</style>
+
+---
+layout: center
+class: text-center
+transition: slide-up
+---
+
+# Play time!
+
+<style>
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #7b57c2 10%, #4a279d 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+</style>
 
 ---
 layout: center
 class: text-center
 ---
 
-# Learn More
+# Questions
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+<style>
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #7b57c2 10%, #4a279d 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+</style>
